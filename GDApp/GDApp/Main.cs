@@ -218,6 +218,8 @@ namespace GDApp
     public class Main : Microsoft.Xna.Framework.Game
     {
         #region Fields
+        public string ID = "groundPanel_";
+        public int outlinePanelCount = 1;
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         private ObjectManager object3DManager;
@@ -254,7 +256,7 @@ namespace GDApp
         protected override void Initialize()
         {
             //set the title
-            Window.Title = "3DGD - My Amazing Game 1.0";
+            Window.Title = "SnowFront";
 
             #region Assets & Dictionaries
             InitializeDictionaries();
@@ -365,6 +367,8 @@ namespace GDApp
             InitializeNonCollidableSkyBox(worldScale);
             //Collidable
             InitializeCollidableGround(worldScale);
+
+            InitializeLevelOutline();
 
             if (gameLevel == 1)
             {
@@ -928,6 +932,7 @@ namespace GDApp
             this.modelDictionary.Load("Assets/Models/box2");
             this.modelDictionary.Load("Assets/Models/torus");
             this.modelDictionary.Load("Assets/Models/sphere");
+            this.modelDictionary.Load("mapLayout", "Assets/Models/mapBlockingOut");
 
             //triangle mesh high/low poly demo
             this.modelDictionary.Load("Assets/Models/teapot");
@@ -960,6 +965,7 @@ namespace GDApp
             this.textureDictionary.Load("Assets/Textures/Skybox/right");
             this.textureDictionary.Load("Assets/Textures/Skybox/sky");
             this.textureDictionary.Load("Assets/Textures/Skybox/front");
+            this.textureDictionary.Load("Assets/Textures/GroundTexture/iceSheet");
             this.textureDictionary.Load("Assets/Textures/Foliage/Trees/tree2");
 
             //dual texture demo
@@ -991,6 +997,30 @@ namespace GDApp
             this.textureDictionary.Load("Assets/Debug/Textures/ml");
             this.textureDictionary.Load("Assets/Debug/Textures/checkerboard");
             #endregion
+        }
+
+        private void InitializeLevelOutline()
+        {
+            #region fields
+            Transform3D transform = null;
+
+            Vector3 groundPanelTranslation = new Vector3(1, 2, -300);
+            Vector3 groundPanelRotation = new Vector3(-90, 0, 0);
+            Vector3 groundPanelScale = new Vector3(1, 1, 1);
+
+            #endregion
+            #region pavement
+            transform = new Transform3D(groundPanelTranslation, groundPanelRotation,groundPanelScale);
+
+            //clone the dictionary effect and set unique properties for the hero player object
+            BasicEffectParameters effectParameters = this.effectDictionary[AppData.UnlitModelsEffectID].Clone() as BasicEffectParameters;
+            effectParameters.Texture = this.textureDictionary["iceSheet"];
+
+            //create a archetype to use for cloning
+            ModelObject mapLayout = new ModelObject("mapLayout", ActorType.Decorator, transform, effectParameters, this.modelDictionary["mapLayout"]);
+            this.object3DManager.Add(mapLayout);
+            #endregion  
+
         }
 
         private void LoadRails()
