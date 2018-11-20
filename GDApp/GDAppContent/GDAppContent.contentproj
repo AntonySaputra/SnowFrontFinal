@@ -509,6 +509,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <Compile Include="Assets\Textures\Menu\exitButton.jpg">
       <Name>exitButton</Name>
       <Importer>TextureImporter</Importer>
@@ -538,6 +539,31 @@
     </Compile>
     <Compile Include="Assets\Textures\UI\HUD\Thermometer.png">
       <Name>Thermometer</Name>
+=======
+    <Compile Include="Assets\Textures\Menu\startButton.jpg">
+      <Name>startButton</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Models\fallenTree.FBX">
+      <Name>fallenTree</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\Menu\Menu.jpg">
+      <Name>Menu</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Textures\Menu\Button.jpg">
+      <Name>Button</Name>
+>>>>>>> 3dc60d836d7b30ffe733cba4a019783b4e30bfa2
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

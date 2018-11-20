@@ -553,24 +553,61 @@ namespace GDApp
         //Triangle mesh objects wrap a tight collision surface around complex shapes - the downside is that TriangleMeshObjects CANNOT be moved
         private void InitializeStaticCollidableTriangleMeshObjects()
         {
-            Transform3D transform3D = new Transform3D(new Vector3(-50, 10, 0), new Vector3(45, 45, 0), 0.1f * Vector3.One, Vector3.UnitX, Vector3.UnitY);
-            //clone the dictionary effect and set unique properties for the hero player object
 
             BasicEffectParameters effectParameters = this.effectDictionary[AppData.LitModelsEffectID].Clone() as BasicEffectParameters;
             effectParameters.Texture = this.textureDictionary["ml"];
             effectParameters.DiffuseColor = Color.White;
-            effectParameters.SpecularPower = 32; //pow((N, H), SpecularPower)
-            effectParameters.EmissiveColor = Color.Red;
 
+<<<<<<< HEAD
             CollidableObject collidableObject = new TriangleMeshObject("torus", ActorType.CollidableProp, transform3D, effectParameters,
                             this.modelDictionary["torus"], new MaterialProperties(0.2f, 0.8f, 0.7f));
             collidableObject.Enable(true, 1);
 
             collidableObject.AttachController(new RotationController("rc", ControllerType.Rotation, Vector3.UnitY));
             this.object3DManager.Add(collidableObject);
+=======
+            Transform3D transform3DFallenTree = new Transform3D(new Vector3(-85, 20, -250), new Vector3(90, 0, -90), new Vector3(0.5f,0.5f,0.5f), Vector3.UnitX, Vector3.UnitY);
+            Transform3D transform3D2 = new Transform3D(new Vector3(-300, 20, -230), new Vector3(0, 0, -90), new Vector3(0.5f, 0.5f, 0.5f), Vector3.UnitX, Vector3.UnitY);
+            Transform3D transform3D3 = new Transform3D(new Vector3(200, 20, -350), new Vector3(-40, 0, -90), new Vector3(0.35f, 0.6f, 0.35f), Vector3.UnitX, Vector3.UnitY);
+            Transform3D transform3D4 = new Transform3D(new Vector3(400, 20, -290), new Vector3(-140, 0, -90), new Vector3(0.35f, 0.6f, 0.35f), Vector3.UnitX, Vector3.UnitY);
+            Transform3D transform3D5 = new Transform3D(new Vector3(340, 20, -520), new Vector3(-0, 0, -90), new Vector3(0.5f, 1, 0.5f), Vector3.UnitX, Vector3.UnitY);
+            Transform3D transform3D6 = new Transform3D(new Vector3(380, 20, -400), new Vector3(-0, 0, -90), new Vector3(0.5f, 1, 0.5f), Vector3.UnitX, Vector3.UnitY);
+
+
+            CollidableObject collidableObject1 = new TriangleMeshObject("fallen tree", ActorType.CollidableProp, transform3DFallenTree, effectParameters,
+                this.modelDictionary["fallenTree"], new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collidableObject1.Enable(true, 1);
+
+            CollidableObject collidableObject2 = new TriangleMeshObject("fallen tree 2", ActorType.CollidableProp, transform3D2, effectParameters,
+            this.modelDictionary["fallenTree"], new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collidableObject1.Enable(true, 1);
+
+            CollidableObject collidableObject3 = new TriangleMeshObject("fallen tree 3", ActorType.CollidableProp, transform3D3, effectParameters,
+            this.modelDictionary["fallenTree"], new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collidableObject1.Enable(true, 1);
+
+            CollidableObject collidableObject4 = new TriangleMeshObject("fallen tree 4", ActorType.CollidableProp, transform3D4, effectParameters,
+            this.modelDictionary["fallenTree"], new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collidableObject1.Enable(true, 1);
+
+            CollidableObject collidableObject5 = new TriangleMeshObject("fallen tree 5", ActorType.CollidableProp, transform3D5, effectParameters,
+            this.modelDictionary["fallenTree"], new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collidableObject1.Enable(true, 1);
+
+            CollidableObject collidableObject6 = new TriangleMeshObject("fallen tree 6", ActorType.CollidableProp, transform3D6, effectParameters,
+            this.modelDictionary["fallenTree"], new MaterialProperties(0.2f, 0.8f, 0.7f));
+            collidableObject1.Enable(true, 1);
+
+            this.object3DManager.Add(collidableObject1);
+            this.object3DManager.Add(collidableObject2);
+            this.object3DManager.Add(collidableObject3);
+            this.object3DManager.Add(collidableObject4);
+            this.object3DManager.Add(collidableObject5);
+            this.object3DManager.Add(collidableObject6);
+>>>>>>> 3dc60d836d7b30ffe733cba4a019783b4e30bfa2
         }
 
-        //Demos use of a low-polygon model to generate the triangle mesh collision skin - saving CPU cycles on CDCR checking
+        //Demos use of a low-polygon model to generate the triangle mesh collision skin - saving CPU ccles on CDCR checking
         private void InitializeStaticCollidableMediumPolyTriangleMeshObjects()
         {
             Transform3D transform3D = new Transform3D(new Vector3(-30, 3, 0),
@@ -772,9 +809,8 @@ namespace GDApp
 
             //add start button
             buttonID = "startbtn";
-            buttonText = "Start";
             position = new Vector2(graphics.PreferredBackBufferWidth / 2.0f, 200);
-            texture = this.textureDictionary["genericbtn"];
+            texture = this.textureDictionary["Button"];
             transform = new Transform2D(position,
                 0, new Vector2(1.8f, 0.6f),
                 new Vector2(texture.Width / 2.0f, texture.Height / 2.0f), new Integer2(texture.Width, texture.Height));
@@ -798,6 +834,7 @@ namespace GDApp
             //add controls button - clone the audio button then just reset texture, ids etc in all the clones
             clone = (UIButtonObject)uiButtonObject.Clone();
             clone.ID = "controlsbtn";
+            clone.Texture = this.textureDictionary["Button"];
             clone.Text = "Controls";
             //move down on Y-axis for next button
             clone.Transform.Translation += new Vector2(0, 2 * verticalBtnSeparation);
@@ -1055,6 +1092,7 @@ namespace GDApp
             this.modelDictionary.Load("Assets/Models/plane");
             this.modelDictionary.Load("Assets/Models/box2");
             this.modelDictionary.Load("Assets/Models/torus");
+            this.modelDictionary.Load("Assets/Models/fallenTree");
             this.modelDictionary.Load("Assets/Models/sphere");
             this.modelDictionary.Load("mapLayout", "Assets/Models/mapBlockingOut");
 
@@ -1099,7 +1137,9 @@ namespace GDApp
             this.textureDictionary.Load("Assets/Textures/Foliage/Ground/grass_highlevel");
 
             //menu - buttons
-            this.textureDictionary.Load("Assets/Textures/UI/Menu/Buttons/genericbtn");
+            this.textureDictionary.Load("Assets/Textures/Menu/Button");
+            this.textureDictionary.Load("Assets/Textures/Menu/startButton");
+            this.textureDictionary.Load("Assets/Textures/Menu/Menu");
 
             //menu - backgrounds
             this.textureDictionary.Load("Assets/Textures/UI/Menu/Backgrounds/mainmenu");
@@ -1136,11 +1176,11 @@ namespace GDApp
 
             Vector3 groundPanelTranslation = new Vector3(1, 2, -300);
             Vector3 groundPanelRotation = new Vector3(-90, 0, 0);
-            Vector3 groundPanelScale = new Vector3(1, 1, 1);
+            Vector3 groundPanelScale = new Vector3(0.5f, 0.5f, 0.5f);
 
             #endregion
             #region pavement
-            transform = new Transform3D(groundPanelTranslation, groundPanelRotation,groundPanelScale);
+            transform = new Transform3D(groundPanelTranslation, groundPanelScale);
 
             //clone the dictionary effect and set unique properties for the hero player object
             BasicEffectParameters effectParameters = this.effectDictionary[AppData.UnlitModelsEffectID].Clone() as BasicEffectParameters;
