@@ -242,6 +242,7 @@ namespace GDApp
         private ModelObject drivableBoxObject;
         private PhysicsDebugDrawer physicsDebugDrawer;
         private PickingManager pickingManager;
+        private HUDManager hudManager;
         #endregion
 
         #region Constructors
@@ -329,6 +330,9 @@ namespace GDApp
                 this.cameraManager, this.spriteBatch, this.eventDispatcher,
                 StatusType.Drawn | StatusType.Update);
             Components.Add(this.menuManager);
+
+            this.hudManager = new HUDManager(this, eventDispatcher, StatusType.Off, this.spriteBatch);
+            Components.Add(this.hudManager);
             #endregion
 
             #region Load Game
@@ -344,8 +348,10 @@ namespace GDApp
 
             #region Menu & UI
             InitializeMenu();
+            InitializeUI();
             //since debug needs sprite batch then call here
             #endregion
+
 
 #if DEBUG
             InitializeDebug(true);
@@ -367,7 +373,8 @@ namespace GDApp
             InitializeNonCollidableSkyBox(worldScale);
             //Collidable
             InitializeCollidableGround(worldScale);
-
+            //InitializeUI();
+            
             InitializeLevelOutline();
 
             if (gameLevel == 1)
@@ -388,6 +395,35 @@ namespace GDApp
             {
                 //add different things for your next level
             }
+        }
+
+        private void InitializeUI()
+        {
+            Transform2D transform = null;
+            UITextureObject texture = null;
+
+            transform = new Transform2D(new Vector2(40, 210), 0, new Vector2(0.7f, 0.77f), Vector2.Zero, new Integer2(20, 281));
+
+            texture = new UITextureObject("thermoBar",
+                ActorType.UITexture, StatusType.Drawn|StatusType.Update,
+                transform, Color.White,
+                SpriteEffects.None, 0f, this.textureDictionary["ThermoBar"]);
+
+            texture.AttachController(new ThermoController("tc", ControllerType.Timer,PlayStatusType.Play));
+            
+
+            this.hudManager.Add(texture);
+
+            transform = new Transform2D(new Vector2(20, 190), 0, new Vector2(0.2f, 0.23f), Vector2.Zero, new Integer2(20, 281));
+
+            texture = new UITextureObject("thermometer",
+                ActorType.UITexture, StatusType.Drawn,
+                transform, Color.White,
+                SpriteEffects.None, 0.5f, this.textureDictionary["Thermometer"]);
+
+
+            this.hudManager.Add(texture);
+
         }
 
         //skybox is a non-collidable series of ModelObjects with no lighting
@@ -529,6 +565,8 @@ namespace GDApp
             CollidableObject collidableObject = new TriangleMeshObject("torus", ActorType.CollidableProp, transform3D, effectParameters,
                             this.modelDictionary["torus"], new MaterialProperties(0.2f, 0.8f, 0.7f));
             collidableObject.Enable(true, 1);
+
+            collidableObject.AttachController(new RotationController("rc", ControllerType.Rotation, Vector3.UnitY));
             this.object3DManager.Add(collidableObject);
         }
 
@@ -705,14 +743,14 @@ namespace GDApp
 
 
 
-
-
         private void InitializeMenu()
         {
             Transform2D transform = null;
             Texture2D texture = null;
             Vector2 position = Vector2.Zero;
             UIButtonObject uiButtonObject = null, clone = null;
+            UITextureObject uiTextureObject = null, textureClone = null;
+            Vector2 midPoint = Vector2.Zero;
             string sceneID = "", buttonID = "", buttonText = "";
             int verticalBtnSeparation = 50;
 
@@ -784,7 +822,7 @@ namespace GDApp
             sceneID = "audio menu";
 
             //retrieve the audio menu background texture
-            texture = this.textureDictionary["audiomenu"];
+            texture = this.textureDictionary["iceSheet"];
             //scale the texture to fit the entire screen
             scale = new Vector2((float)graphics.PreferredBackBufferWidth / texture.Width,
                 (float)graphics.PreferredBackBufferHeight / texture.Height);
@@ -805,10 +843,28 @@ namespace GDApp
             clone.Color = Color.LightPink;
             this.menuManager.Add(sceneID, clone);
 
+            transform = new Transform2D(new Vector2(200, 230), 0, new Vector2(1, 0.5f), Vector2.Zero, new Integer2(600, 160));
+
+            uiTextureObject = new UITextureObject("slider1", ActorType.UITexture,
+                StatusType.Drawn | StatusType.Update, transform,
+                Color.White, SpriteEffects.None, 0.1f,
+                this.textureDictionary["sliderBar"]);
+
+            this.menuManager.Add(sceneID, uiTextureObject);
+
+            transform = new Transform2D(new Vector2(300, 220), 0, new Vector2(1, 0.7f), Vector2.Zero, new Integer2(180, 150));
+
+            uiTextureObject = new UITextureObject("tracker1", ActorType.UITexture,
+                StatusType.Drawn | StatusType.Update, transform,
+                Color.White, SpriteEffects.None, 0,
+                this.textureDictionary["sliderTracker"]);
+
+            this.menuManager.Add(sceneID, uiTextureObject);
+
             //add volume down button - clone the audio button then just reset texture, ids etc in all the clones
             clone = (UIButtonObject)uiButtonObject.Clone();
             //move down on Y-axis for next button
-            clone.Transform.Translation += new Vector2(0, verticalBtnSeparation);
+            clone.Transform.Translation += new Vector2(0, 3 * verticalBtnSeparation);
             clone.ID = "volumeDownbtn";
             clone.Text = "Volume Down";
             //change the texture blend color
@@ -818,7 +874,7 @@ namespace GDApp
             //add volume mute button - clone the audio button then just reset texture, ids etc in all the clones
             clone = (UIButtonObject)uiButtonObject.Clone();
             //move down on Y-axis for next button
-            clone.Transform.Translation += new Vector2(0, 2 * verticalBtnSeparation);
+            clone.Transform.Translation += new Vector2(0, 4 * verticalBtnSeparation);
             clone.ID = "volumeMutebtn";
             clone.Text = "Volume Mute";
             //change the texture blend color
@@ -828,7 +884,7 @@ namespace GDApp
             //add volume mute button - clone the audio button then just reset texture, ids etc in all the clones
             clone = (UIButtonObject)uiButtonObject.Clone();
             //move down on Y-axis for next button
-            clone.Transform.Translation += new Vector2(0, 3 * verticalBtnSeparation);
+            clone.Transform.Translation += new Vector2(0, 5 * verticalBtnSeparation);
             clone.ID = "volumeUnMutebtn";
             clone.Text = "Volume Un-mute";
             //change the texture blend color
@@ -838,7 +894,7 @@ namespace GDApp
             //add back button - clone the audio button then just reset texture, ids etc in all the clones
             clone = (UIButtonObject)uiButtonObject.Clone();
             //move down on Y-axis for next button
-            clone.Transform.Translation += new Vector2(0, 4 * verticalBtnSeparation);
+            clone.Transform.Translation += new Vector2(0, 6 * verticalBtnSeparation);
             clone.ID = "backbtn";
             clone.Text = "Back";
             //change the texture blend color
@@ -871,6 +927,74 @@ namespace GDApp
             clone.Color = Color.LightYellow;
             this.menuManager.Add(sceneID, clone);
             #endregion
+
+            #region PauseMenu
+
+            sceneID = "pause menu";
+
+            #region backgroundTexture
+            texture = this.textureDictionary["iceSheet"];
+            //scale the texture to fit the entire screen
+
+            scale = new Vector2((float)graphics.PreferredBackBufferWidth / texture.Width,
+                (float)graphics.PreferredBackBufferHeight / texture.Height);
+            transform = new Transform2D(scale);
+            this.menuManager.Add(sceneID, new UITextureObject("audiomenuTexture",
+                ActorType.UITexture,
+                StatusType.Drawn, //notice we dont need to update a static texture
+                transform, Color.White, SpriteEffects.None,
+                1, //depth is 1 so its always sorted to the back of other menu elements
+                texture));
+
+            #endregion
+
+            #region Buttons
+
+            midPoint = new Vector2(this.textureDictionary["menuButton"].Width / 2.0f,
+               this.textureDictionary["menuButton"].Height / 2.0f);
+            //add start button
+            buttonID = "audiobtn";
+
+            texture = this.textureDictionary["menuButton"];
+            transform = new Transform2D(new Vector2(graphics.PreferredBackBufferWidth / 2.0f, 200),
+              0, 0.2f * Vector2.One, midPoint, new Integer2(1000, 367));
+
+            uiTextureObject = new UITextureObject(buttonID, ActorType.UITexture, StatusType.Update | StatusType.Drawn,
+                transform, Color.White, SpriteEffects.None, 0.1f, texture);
+
+            uiTextureObject.AttachController(new UIColorSineLerpController("cslc1",
+                ControllerType.SineColor, new TrigonometricParameters(1, 0.1f), Color.Blue, Color.White));
+
+            this.menuManager.Add(sceneID, uiTextureObject);
+
+            //add audio button - clone the audio button then just reset texture, ids etc in all the clones
+            textureClone = (UITextureObject)uiTextureObject.Clone();
+            textureClone.ID = "controlsbtn";
+
+            //move down on Y-axis for next button
+            textureClone.Transform.Translation += new Vector2(0, 3 * verticalBtnSeparation);
+            //change the texture blend color
+            textureClone.Color = Color.White;
+
+            this.menuManager.Add(sceneID, textureClone);
+
+            //add controls button - clone the audio button then just reset texture, ids etc in all the clones
+            textureClone = (UITextureObject)uiTextureObject.Clone();
+            textureClone.ID = "exitbtn";
+
+            //move down on Y-axis for next button
+            textureClone.Transform.Translation += new Vector2(0, 2 * 3 * verticalBtnSeparation);
+            //change the texture blend color
+            textureClone.Color = Color.White;
+            textureClone.Texture = this.textureDictionary["exitButton"];
+            this.menuManager.Add(sceneID, textureClone);
+
+            #endregion
+
+
+            #endregion
+
+            
         }
 
         private void InitializeDictionaries()
@@ -967,6 +1091,8 @@ namespace GDApp
             this.textureDictionary.Load("Assets/Textures/Skybox/front");
             this.textureDictionary.Load("Assets/Textures/GroundTexture/iceSheet");
             this.textureDictionary.Load("Assets/Textures/Foliage/Trees/tree2");
+            this.textureDictionary.Load("Assets/Textures/UI/HUD/ThermoBar");
+            this.textureDictionary.Load("Assets/Textures/UI/HUD/Thermometer");
 
             //dual texture demo
             this.textureDictionary.Load("Assets/Textures/Foliage/Ground/grass_midlevel");
@@ -980,6 +1106,10 @@ namespace GDApp
             this.textureDictionary.Load("Assets/Textures/UI/Menu/Backgrounds/audiomenu");
             this.textureDictionary.Load("Assets/Textures/UI/Menu/Backgrounds/controlsmenu");
             this.textureDictionary.Load("Assets/Textures/UI/Menu/Backgrounds/exitmenuwithtrans");
+            this.textureDictionary.Load("Assets/Textures/Menu/exitButton");
+            this.textureDictionary.Load("Assets/Textures/Menu/menuButton");
+            this.textureDictionary.Load("Assets/Textures/Menu/sliderBar");
+            this.textureDictionary.Load("Assets/Textures/Menu/sliderTracker");
 
             //ui (or hud) elements
             this.textureDictionary.Load("Assets/Textures/UI/HUD/reticuleDefault");
@@ -1376,10 +1506,12 @@ namespace GDApp
         {
             if (this.keyboardManager.IsFirstKeyPress(AppData.MenuShowHideKey))
             {
-                if(this.menuManager.IsVisible)
+                this.menuManager.SetActiveList("pause menu");
+                if (this.menuManager.IsVisible)
                     EventDispatcher.Publish(new EventData(EventActionType.OnStart, EventCategoryType.Menu));
                 else
                     EventDispatcher.Publish(new EventData(EventActionType.OnPause, EventCategoryType.Menu));
+                
             }
         }
 

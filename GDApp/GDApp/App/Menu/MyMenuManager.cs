@@ -7,6 +7,8 @@ namespace GDApp
 {
     public class MyMenuManager : MenuManager
     {
+        private string prevMenu = "main menu";
+
         public MyMenuManager(Game game, InputManagerParameters inputManagerParameters, CameraManager cameraManager,
             SpriteBatch spriteBatch, EventDispatcher eventDispatcher, StatusType statusType) 
             : base(game, inputManagerParameters, cameraManager, spriteBatch, eventDispatcher, statusType)
@@ -29,6 +31,7 @@ namespace GDApp
             }
             else if (eventData.EventType == EventActionType.OnPause)
             {
+                
                 //add event to play background menu music here...
                 //object[] additionalParameters = { "menu elevator music" };
                 //EventDispatcher.Publish(new EventData(EventActionType.OnPlay, EventCategoryType.Sound2D, additionalParameters));
@@ -41,7 +44,8 @@ namespace GDApp
             if (uiObject.Transform.Bounds.Contains(this.InputManagerParameters.MouseManager.Bounds))
             {
                 //mouse is inside the bounds of the object - uiObject.ID
-                if (this.InputManagerParameters.MouseManager.IsLeftButtonClicked())
+                
+                if (this.InputManagerParameters.MouseManager.IsLeftButtonClickedOnce())
                     HandleMouseClick(uiObject, gameTime);
             }
         }
@@ -52,8 +56,10 @@ namespace GDApp
         protected override void HandleMouseClick(DrawnActor2D uiObject, GameTime gameTime)
         {
             //notice that the IDs are the same as the button IDs specified when we created the menu in Main::AddMenuElements()
+            
             switch (uiObject.ID)
                 {
+
                     case "startbtn":
                         DoStart();
                         break;
@@ -63,7 +69,9 @@ namespace GDApp
                         break;
 
                     case "audiobtn":
+                        
                         SetActiveList("audio menu"); //use sceneIDs specified when we created the menu scenes in Main::AddMenuElements()
+                        
                         break;
 
                     case "volumeUpbtn":
@@ -95,12 +103,15 @@ namespace GDApp
                     break;
 
                     case "backbtn":
-                        SetActiveList("main menu"); //use sceneIDs specified when we created the menu scenes in Main::AddMenuElements()
+
+                    SetActiveList(prevMenu); //use sceneIDs specified when we created the menu scenes in Main::AddMenuElements()
                         break;
 
                     case "controlsbtn":
+                        
                         SetActiveList("controls menu"); //use sceneIDs specified when we created the menu scenes in Main::AddMenuElements()
-                        break;
+                        
+                    break;
 
                     default:
                         break;
@@ -121,7 +132,10 @@ namespace GDApp
         {
             //will be received by the menu manager and screen manager and set the menu to be shown and game to be paused
             EventDispatcher.Publish(new EventData(EventActionType.OnStart, EventCategoryType.Menu));
+            this.prevMenu = "pause menu";
+
         }
+
 
         private void DoExit()
         {

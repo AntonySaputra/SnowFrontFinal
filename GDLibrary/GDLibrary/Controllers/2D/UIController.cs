@@ -41,6 +41,7 @@ namespace GDLibrary
             {
                 this.totalElapsedTime += gameTime.ElapsedGameTime.Milliseconds;
                 this.bEnabled = true;
+                
             }
             else
             {

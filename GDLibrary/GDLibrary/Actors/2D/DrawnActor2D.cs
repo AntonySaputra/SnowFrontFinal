@@ -1,4 +1,4 @@
-﻿/*
+﻿ /*
 Function: 		Represents the parent class for all updateable AND drawn 2D menu and UI objects. 
 Author: 		NMCG
 Version:		1.0

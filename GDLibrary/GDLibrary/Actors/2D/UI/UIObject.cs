@@ -24,6 +24,7 @@ namespace GDLibrary
             : base(id, actorType, transform, statusType, color, spriteEffects, layerDepth)
         {
             this.mouseOverState = new StatefulBool(2); 
+           
         }
 
         public override int GetHashCode()

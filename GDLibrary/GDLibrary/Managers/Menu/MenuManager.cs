@@ -56,6 +56,29 @@ namespace GDLibrary
 
             //used to render menu and UI elements
             this.spriteBatch = spriteBatch;
+            eventDispatcher.GlobalSoundChanged += EventDispatcher_GlobalSoundChanged;
+        }
+
+        private void EventDispatcher_GlobalSoundChanged(EventData eventData)
+        {
+
+            DrawnActor2D volTracker = this.menuDictionary["audio menu"].Find(actor => actor.GetID().Equals("tracker1"));
+            DrawnActor2D volSlider = this.menuDictionary["audio menu"].Find(actor => actor.GetID().Equals("slider1"));
+
+            if (eventData.EventType == EventActionType.OnVolumeUp)
+            {
+                if (volTracker.Transform.Translation.X < (volSlider.Transform.Translation.X + 430))
+                {
+                    volTracker.Transform.Translation += new Vector2(10, 0);
+                }
+
+            }else if(eventData.EventType == EventActionType.OnVolumeDown)
+            {
+                if (volTracker.Transform.Translation.X > volSlider.Transform.Translation.X )
+                {
+                    volTracker.Transform.Translation -= new Vector2(10, 0);
+                }
+            }
         }
 
         #region Event Handling

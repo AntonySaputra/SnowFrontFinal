@@ -78,6 +78,7 @@
     <Compile Include="GDLibrary\Actors\3D\Collidable\TriangleMeshObject.cs" />
     <Compile Include="GDLibrary\Actors\3D\DrawnActor3D.cs" />
     <Compile Include="GDLibrary\Container\Dictionary\ContentDictionary.cs" />
+    <Compile Include="GDLibrary\Controllers\2D\ThermoController.cs" />
     <Compile Include="GDLibrary\Controllers\2D\UIController.cs" />
     <Compile Include="GDLibrary\Controllers\2D\UI\UIColorSineLerpController.cs" />
     <Compile Include="GDLibrary\Controllers\2D\UI\UIProgressController.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="GDLibrary\Events\Data\EventData.cs" />
     <Compile Include="GDLibrary\Interfaces\IController.cs" />
     <Compile Include="GDLibrary\Interfaces\IEffectParameters.cs" />
+    <Compile Include="GDLibrary\Managers\HUD\HUDManager.cs" />
     <Compile Include="GDLibrary\Managers\Input\GamepadManager.cs" />
     <Compile Include="GDLibrary\Managers\Menu\MenuManager.cs" />
     <Compile Include="GDLibrary\Managers\Physics\PhysicsManager.cs" />
