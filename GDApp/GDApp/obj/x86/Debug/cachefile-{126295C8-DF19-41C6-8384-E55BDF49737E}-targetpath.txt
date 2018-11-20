@@ -91,6 +91,10 @@ Content\Assets\Models\Animated\jacket_0.xnb
 Content\Assets\Models\Animated\pants_0.xnb
 Content\Assets\Models\Animated\upBodyC_0.xnb
 Content\Assets\Textures\GroundTexture\iceSheet.xnb
+Content\Assets\Textures\Menu\startButton.xnb
+Content\Assets\Models\fallenTree.xnb
+Content\Assets\Textures\Menu\Menu.xnb
+Content\Assets\Textures\Menu\Button.xnb
 Content\Assets\Audio\Demo2DSound.xgs
 Content\Assets\Audio\WaveBank1.xwb
 Content\Assets\Audio\SoundBank1.xsb
